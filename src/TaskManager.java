@@ -20,20 +20,20 @@ public class TaskManager {
         return new ArrayList<>(subTasks.values());
     }
 
-    public void DeleteTasks() {
+    public void deleteTasks() {
         tasks.clear();
     }
 
-    public void DeleteEpics() {
+    public void deleteEpics() {
         for (Epic epic : epics.values()) {
-            RemoveAllSubTask(epic);
+            removeAllSubTask(epic);
         }
         epics.clear();
     }
 
-    public void DeleteSubTasks() {
+    public void deleteSubTasks() {
         for (Epic epic : epics.values()) {
-            RemoveAllSubTask(epic);
+            removeAllSubTask(epic);
         }
         subTasks.clear();
     }
@@ -112,7 +112,7 @@ public class TaskManager {
 
     public SubTask updateTask(SubTask subTask, Status status) {
         subTask.setStatus(status);
-        checkAllSubTasksSameStatusById(subTask.getEpicId(), Status.DONE);
+        checkAllSubTasksSameStatus(subTask.getEpicId(), Status.DONE);
         return subTask;
     }
 
@@ -121,7 +121,7 @@ public class TaskManager {
     }
 
     public void deleteEpicById(int id) {
-        RemoveAllSubTask(getEpicById(id));
+        removeAllSubTask(getEpicById(id));
         epics.remove(id);
     }
 
@@ -129,7 +129,7 @@ public class TaskManager {
         subTasks.remove(id);
     }
 
-    public boolean checkAllSubTasksSameStatusById(int id, Status status) {
+    public boolean checkAllSubTasksSameStatus(int id, Status status) {
         boolean allSubTasksSameStatus = false;
         for (Integer subTaskid : getEpicById(id).getSubTasks()) {
             if (getSubTaskById(subTaskid).getStatus().equals(status))
@@ -139,9 +139,10 @@ public class TaskManager {
                 break;
             }
         }
-        if(status.equals(Status.DONE) && allSubTasksSameStatus){
+        if (status.equals(Status.DONE) && allSubTasksSameStatus) {
             getEpicById(id).setAreAllSubTasksCompleted(true);
-            getEpicById(id).setStatus(Status.DONE);}
+            getEpicById(id).setStatus(Status.DONE);
+        }
         return allSubTasksSameStatus;
     }
 
@@ -161,10 +162,10 @@ public class TaskManager {
     public void addSubTask(SubTask subTask, Epic epic) {
         epic.getSubTasks().add(subTask.getId());
         subTask.setEpicId(epic.getId());
-        checkAllSubTasksSameStatusById(epic.getId(), Status.DONE);
+        checkAllSubTasksSameStatus(epic.getId(), Status.DONE);
     }
 
-    public void RemoveAllSubTask(Epic epic) {
+    public void removeAllSubTask(Epic epic) {
         epic.getSubTasks().clear();
     }
 }
