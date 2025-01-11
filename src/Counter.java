@@ -1,7 +1,7 @@
 public class Counter {
-    static int counter = 0;
+    private int counter = 0;
 
-    public int getId(){
+    public int getId() {
         return ++counter;
     }
 }
