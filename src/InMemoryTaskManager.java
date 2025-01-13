@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
+
     private HashMap<Integer, Task> tasks;
     private HashMap<Integer, Epic> epics;
     private HashMap<Integer, SubTask> subTasks;
@@ -184,11 +185,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addSubTask(SubTask subTask, Epic epic) {
         boolean found = false;
-        for(Epic epics : epics.values()) {
-            if (epics.getId() == subTask.getId()) {
-                found = true;
-                break;
-            }
+        for (Epic epics : epics.values()) {
+            found = true;
+            break;
         }
         if (!found) {
             epic.getSubTasks().add(subTask.getId());
@@ -202,3 +201,5 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getSubTasks().clear();
     }
 }
+
+
