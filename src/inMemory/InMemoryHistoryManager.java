@@ -1,10 +1,15 @@
-import java.util.ArrayList;
+package inMemory;
+
+import interfaces.HistoryManager;
+import taskClasses.Task;
+
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    ArrayList<Task> history;
+    private List<Task> history;
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return this.history;
     }
 

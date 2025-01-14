@@ -1,3 +1,7 @@
+package taskClasses;
+
+import utilities.Status;
+
 import java.util.Objects;
 
 public class Task {
@@ -43,7 +47,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "taskClasses.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +

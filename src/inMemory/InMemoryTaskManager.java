@@ -1,3 +1,12 @@
+package inMemory;
+
+import interfaces.TaskManager;
+import taskClasses.Epic;
+import taskClasses.SubTask;
+import taskClasses.Task;
+import utilities.Counter;
+import utilities.Status;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -122,8 +131,8 @@ public class InMemoryTaskManager implements TaskManager {
     public Epic updateTask(Epic epic, Status status) {
         epic.setStatus(status);
         if (status.equals(Status.DONE)) {
-            for (Integer subTaskid : epic.getSubTasks()) {
-                getSubTaskById(subTaskid).setStatus(Status.DONE);
+            for (Integer subTaskId : epic.getSubTasks()) {
+                getSubTaskById(subTaskId).setStatus(Status.DONE);
             }
         }
         return epic;
@@ -154,8 +163,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     public boolean checkAllSubTasksSameStatus(int id, Status status) {
         boolean allSubTasksSameStatus = false;
-        for (Integer subTaskid : getEpicById(id).getSubTasks()) {
-            if (getSubTaskById(subTaskid).getStatus().equals(status))
+        for (Integer subTaskId : getEpicById(id).getSubTasks()) {
+            if (getSubTaskById(subTaskId).getStatus().equals(status))
                 allSubTasksSameStatus = true;
             else {
                 allSubTasksSameStatus = false;
@@ -171,8 +180,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     public boolean checkAllSubTasksSameStatus(ArrayList<Integer> subtasksIds, Status status) {
         boolean allSubTasksSameStatus = false;
-        for (Integer subTaskid : subtasksIds) {
-            if (getSubTaskById(subTaskid).getStatus().equals(status))
+        for (Integer subTaskId : subtasksIds) {
+            if (getSubTaskById(subTaskId).getStatus().equals(status))
                 allSubTasksSameStatus = true;
             else {
                 allSubTasksSameStatus = false;
@@ -186,8 +195,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void addSubTask(SubTask subTask, Epic epic) {
         boolean found = false;
         for (Epic epics : epics.values()) {
-            found = true;
-            break;
+            if(epic.getId() == epics.getId()) {
+                found = true;
+                break;
+            }
         }
         if (!found) {
             epic.getSubTasks().add(subTask.getId());

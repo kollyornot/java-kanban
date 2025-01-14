@@ -1,3 +1,5 @@
+package utilities;
+
 public class Counter {
     private int counter = 0;
 

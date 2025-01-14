@@ -1,3 +1,10 @@
+package main;
+
+import inMemory.InMemoryHistoryManager;
+import inMemory.InMemoryTaskManager;
+import interfaces.HistoryManager;
+import interfaces.TaskManager;
+
 public class Managers {
 
     private InMemoryTaskManager inMemoryTaskManager;
@@ -7,7 +14,7 @@ public class Managers {
         return inMemoryTaskManager;
     }
 
-    public static HistoryManager getDefaultHistory(){
+    public static HistoryManager getDefaultHistory() {
         return inMemoryHistoryManager;
     }
 }

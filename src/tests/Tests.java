@@ -1,7 +1,17 @@
+package tests;
 
+import interfaces.HistoryManager;
+import interfaces.TaskManager;
+import main.Managers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import taskClasses.Epic;
+import taskClasses.SubTask;
+import taskClasses.Task;
+import utilities.Status;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,15 +74,15 @@ class Tests {
 /*
     @Test
     void cannotAddEpicAsSubTask() {
-        Epic epic = taskManager.addNewEpic("Test cannotAddEpicAsSubTasks", "Test cannotAddEpicAsSubTask description", new ArrayList<>());
-        Epic epic1 = taskManager.addNewEpic("Test cannotAddEpicAsSubTask1", "Test cannotAddEpicAsSubTask1 description", new ArrayList<>());
-        taskManager.addSubTask((SubTask) epic, epic1); <-- error bc of the difference between classes
+        taskClasses.Epic epic = taskManager.addNewEpic("Test cannotAddEpicAsSubTasks", "Test cannotAddEpicAsSubTask description", new ArrayList<>());
+        taskClasses.Epic epic1 = taskManager.addNewEpic("Test cannotAddEpicAsSubTask1", "Test cannotAddEpicAsSubTask1 description", new ArrayList<>());
+        taskManager.addSubTask((taskClasses.SubTask) epic, epic1); <-- error bc of the difference between classes
 
     } */
     //проверьте, что объект Subtask нельзя сделать своим же эпиком: не вижу смысла для проверки, в моем коде
     // айди подзадачи генерируется сам, создавая уникальный айди, который не может совпасть с айди эпика
 
-    //проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи; - то же самое, я добавила
+    //проверьте, что объект taskClasses.Epic нельзя добавить в самого себя в виде подзадачи; - то же самое, я добавила
     //проверку в методе, но я не вижу в ней никакого смысла
 
     //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера; - у меня не задаются
@@ -83,7 +93,7 @@ class Tests {
         final int taskId = task.getId();
         assertEquals("Test fieldsDidNotChange", task.getName(), "название не совпадает");
         assertEquals("Test fieldsDidNotChange description", task.getDescription(), "описание не совпадает");
-        assertEquals(Status.NEW, task.getStatus(), "статус не совпадает");
+        Assertions.assertEquals(Status.NEW, task.getStatus(), "статус не совпадает");
         assertEquals(taskId, task.getId(), "айди не совпадает");
     }
 
@@ -93,7 +103,7 @@ class Tests {
         historyManager.addTaskToHistory(task);
         ArrayList<Task> history1 = new ArrayList<>();
         history1.add(task);
-        final ArrayList<Task> history = historyManager.getHistory();
+        final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
         assertEquals(1, history.size(), "История не пустая.");
         assertEquals(history1, history, "Истории не равны");
@@ -108,9 +118,9 @@ class Tests {
         int epicId = epic.getId();
         int subTaskId = subTask.getId();
 
-        assertEquals(task, taskManager.getTaskById(taskId), "задачи не совпадают");
-        assertEquals(epic, taskManager.getEpicById(epicId), "эпики не совпадают");
-        assertEquals(subTask, taskManager.getSubTaskById(subTaskId), "подзадачи не совпадают");
+        Assertions.assertEquals(task, taskManager.getTaskById(taskId), "задачи не совпадают");
+        Assertions.assertEquals(epic, taskManager.getEpicById(epicId), "эпики не совпадают");
+        Assertions.assertEquals(subTask, taskManager.getSubTaskById(subTaskId), "подзадачи не совпадают");
 
     }
 }

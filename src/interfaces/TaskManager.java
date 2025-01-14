@@ -1,3 +1,10 @@
+package interfaces;
+
+import taskClasses.Epic;
+import taskClasses.SubTask;
+import taskClasses.Task;
+import utilities.Status;
+
 import java.util.ArrayList;
 
 public interface TaskManager {

@@ -1,3 +1,7 @@
+package taskClasses;
+
+import utilities.Status;
+
 public class SubTask extends Task {
     private int epicId;
 
@@ -16,7 +20,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
+        return "taskClasses.SubTask{" +
                 "epicId=" + epicId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
