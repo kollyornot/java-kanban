@@ -57,7 +57,7 @@ class Tests {
 
     @Test
     void addNewSubTask() {
-        SubTask subTask = taskManager.addNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, taskManager.epicList().getFirst().getId());
+        SubTask subTask = taskManager.addNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, 14);
         final int subTaskId = subTask.getId();
 
         final Task savedSubTask = taskManager.getSubTaskById(subTaskId);
@@ -114,7 +114,7 @@ class Tests {
         Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
         Epic epic = taskManager.addNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
         SubTask subTask = taskManager.addNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, taskManager.epicList().getFirst().getId());
-        int taskId = subTask.getId();
+        int taskId = task.getId();
         int epicId = epic.getId();
         int subTaskId = subTask.getId();
 

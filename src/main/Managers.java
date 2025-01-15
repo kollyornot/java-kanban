@@ -1,14 +1,14 @@
 package main;
 
-import inMemory.InMemoryHistoryManager;
-import inMemory.InMemoryTaskManager;
+import history.InMemoryHistoryManager;
+import taskInteraction.InMemoryTaskManager;
 import interfaces.HistoryManager;
 import interfaces.TaskManager;
 
 public class Managers {
 
-    private InMemoryTaskManager inMemoryTaskManager;
-    private static InMemoryHistoryManager inMemoryHistoryManager;
+    private InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+    private static InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     public TaskManager getDefault() {
         return inMemoryTaskManager;

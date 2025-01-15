@@ -1,5 +1,6 @@
-package inMemory;
+package taskInteraction;
 
+import history.InMemoryHistoryManager;
 import interfaces.TaskManager;
 import taskClasses.Epic;
 import taskClasses.SubTask;
@@ -12,11 +13,11 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, Epic> epics;
-    private HashMap<Integer, SubTask> subTasks;
-    private final Counter counter = new Counter();
-    private InMemoryHistoryManager inMemoryHistoryManager;
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, SubTask> subTasks= new HashMap<>();
+    private Counter counter = new Counter();
+    private InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     @Override
     public ArrayList<Task> taskList() {
@@ -161,7 +162,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.remove(id);
     }
 
-    public boolean checkAllSubTasksSameStatus(int id, Status status) {
+    public void checkAllSubTasksSameStatus(int id, Status status) {
         boolean allSubTasksSameStatus = false;
         for (Integer subTaskId : getEpicById(id).getSubTasks()) {
             if (getSubTaskById(subTaskId).getStatus().equals(status))
@@ -175,7 +176,6 @@ public class InMemoryTaskManager implements TaskManager {
             getEpicById(id).setAreAllSubTasksCompleted(true);
             getEpicById(id).setStatus(Status.DONE);
         }
-        return allSubTasksSameStatus;
     }
 
     public boolean checkAllSubTasksSameStatus(ArrayList<Integer> subtasksIds, Status status) {
@@ -195,7 +195,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void addSubTask(SubTask subTask, Epic epic) {
         boolean found = false;
         for (Epic epics : epics.values()) {
-            if(epic.getId() == epics.getId()) {
+            if (epic.getId() == epics.getId()) {
                 found = true;
                 break;
             }
