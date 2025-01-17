@@ -71,22 +71,7 @@ class Tests {
         assertEquals(1, subTasks.size(), "Неверное количество подзадач.");
         assertEquals(subTask, subTasks.getFirst(), "Подзадачи не совпадают.");
     }
-/*
-    @Test
-    void cannotAddEpicAsSubTask() {
-        taskClasses.Epic epic = taskManager.addNewEpic("Test cannotAddEpicAsSubTasks", "Test cannotAddEpicAsSubTask description", new ArrayList<>());
-        taskClasses.Epic epic1 = taskManager.addNewEpic("Test cannotAddEpicAsSubTask1", "Test cannotAddEpicAsSubTask1 description", new ArrayList<>());
-        taskManager.addSubTask((taskClasses.SubTask) epic, epic1); <-- error bc of the difference between classes
 
-    } */
-    //проверьте, что объект Subtask нельзя сделать своим же эпиком: не вижу смысла для проверки, в моем коде
-    // айди подзадачи генерируется сам, создавая уникальный айди, который не может совпасть с айди эпика
-
-    //проверьте, что объект taskClasses.Epic нельзя добавить в самого себя в виде подзадачи; - то же самое, я добавила
-    //проверку в методе, но я не вижу в ней никакого смысла
-
-    //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера; - у меня не задаются
-    //никакие айди, все генерируются
     @Test
     void fieldsDidNotChange() {
         Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);

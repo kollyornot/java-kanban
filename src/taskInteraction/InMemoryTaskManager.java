@@ -2,6 +2,7 @@ package taskInteraction;
 
 import history.InMemoryHistoryManager;
 import interfaces.TaskManager;
+import main.Managers;
 import taskClasses.Epic;
 import taskClasses.SubTask;
 import taskClasses.Task;
@@ -17,7 +18,8 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks= new HashMap<>();
     private Counter counter = new Counter();
-    private InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    Managers managers = new Managers();
+    private InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) managers.getDefaultHistory();
 
     @Override
     public ArrayList<Task> taskList() {

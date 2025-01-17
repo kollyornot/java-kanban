@@ -7,14 +7,14 @@ import interfaces.TaskManager;
 
 public class Managers {
 
-    private InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-    private static InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    private InMemoryTaskManager inMemoryTaskManager;
+    private static InMemoryHistoryManager inMemoryHistoryManager;
 
     public TaskManager getDefault() {
-        return inMemoryTaskManager;
+        return new InMemoryTaskManager();
     }
 
     public static HistoryManager getDefaultHistory() {
-        return inMemoryHistoryManager;
+        return new InMemoryHistoryManager();
     }
 }
