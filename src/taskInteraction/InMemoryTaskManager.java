@@ -14,12 +14,11 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, SubTask> subTasks= new HashMap<>();
-    private Counter counter = new Counter();
-    Managers managers = new Managers();
-    private InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) managers.getDefaultHistory();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, SubTask> subTasks= new HashMap<>();
+    private final Counter counter = new Counter();
+    private final InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) Managers.getDefaultHistory();
 
     @Override
     public ArrayList<Task> taskList() {

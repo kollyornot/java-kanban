@@ -7,10 +7,7 @@ import interfaces.TaskManager;
 
 public class Managers {
 
-    private InMemoryTaskManager inMemoryTaskManager;
-    private static InMemoryHistoryManager inMemoryHistoryManager;
-
-    public TaskManager getDefault() {
+    public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
 
