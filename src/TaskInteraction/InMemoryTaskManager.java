@@ -1,13 +1,13 @@
-package taskInteraction;
+package TaskInteraction;
 
-import history.InMemoryHistoryManager;
-import interfaces.TaskManager;
-import main.Managers;
-import taskClasses.Epic;
-import taskClasses.SubTask;
-import taskClasses.Task;
-import utilities.Counter;
-import utilities.Status;
+import History.InMemoryHistoryManager;
+import Interfaces.TaskManager;
+import Main.Managers;
+import TaskClasses.Epic;
+import TaskClasses.SubTask;
+import TaskClasses.Task;
+import Utilities.Counter;
+import Utilities.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;

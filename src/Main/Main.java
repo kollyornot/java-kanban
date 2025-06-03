@@ -1,4 +1,4 @@
-package main;
+package Main;
 
 public class Main {
     //я очень надеюсь, что я правильно поняла задание, если нет, простите:(

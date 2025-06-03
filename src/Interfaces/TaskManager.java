@@ -1,9 +1,9 @@
-package interfaces;
+package Interfaces;
 
-import taskClasses.Epic;
-import taskClasses.SubTask;
-import taskClasses.Task;
-import utilities.Status;
+import TaskClasses.Epic;
+import TaskClasses.SubTask;
+import TaskClasses.Task;
+import Utilities.Status;
 
 import java.util.ArrayList;
 

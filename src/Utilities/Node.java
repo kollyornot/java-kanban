@@ -1,4 +1,4 @@
-package utilities;
+package Utilities;
 
 public class Node<T> {
     private T value;

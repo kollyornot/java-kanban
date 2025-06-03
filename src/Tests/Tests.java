@@ -1,14 +1,14 @@
-package tests;
+package Tests;
 
-import interfaces.HistoryManager;
-import interfaces.TaskManager;
-import main.Managers;
+import Interfaces.HistoryManager;
+import Interfaces.TaskManager;
+import Main.Managers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import taskClasses.Epic;
-import taskClasses.SubTask;
-import taskClasses.Task;
-import utilities.Status;
+import TaskClasses.Epic;
+import TaskClasses.SubTask;
+import TaskClasses.Task;
+import Utilities.Status;
 
 import java.util.ArrayList;
 import java.util.List;

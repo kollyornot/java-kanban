@@ -1,10 +1,10 @@
-package tests;
+package Tests;
 
-import interfaces.HistoryManager;
-import interfaces.TaskManager;
+import Interfaces.HistoryManager;
+import Interfaces.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import main.Managers;
+import Main.Managers;
 
 import static org.junit.jupiter.api.Assertions.*;
 

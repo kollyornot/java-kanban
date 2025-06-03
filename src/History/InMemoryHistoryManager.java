@@ -1,8 +1,8 @@
-package history;
+package History;
 
-import interfaces.HistoryManager;
-import taskClasses.Task;
-import utilities.Node;
+import Interfaces.HistoryManager;
+import TaskClasses.Task;
+import Utilities.Node;
 
 import java.util.HashMap;
 import java.util.LinkedList;

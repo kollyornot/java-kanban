@@ -1,9 +1,9 @@
-package main;
+package Main;
 
-import history.InMemoryHistoryManager;
-import taskInteraction.InMemoryTaskManager;
-import interfaces.HistoryManager;
-import interfaces.TaskManager;
+import History.InMemoryHistoryManager;
+import TaskInteraction.InMemoryTaskManager;
+import Interfaces.HistoryManager;
+import Interfaces.TaskManager;
 
 public class Managers {
 

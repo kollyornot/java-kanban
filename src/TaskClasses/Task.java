@@ -1,6 +1,6 @@
-package taskClasses;
+package TaskClasses;
 
-import utilities.Status;
+import Utilities.Status;
 
 import java.util.Objects;
 

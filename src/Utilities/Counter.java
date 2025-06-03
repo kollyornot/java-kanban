@@ -1,4 +1,4 @@
-package utilities;
+package Utilities;
 
 public class Counter {
     private int counter = 0;
