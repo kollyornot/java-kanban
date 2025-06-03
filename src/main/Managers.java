@@ -1,7 +1,7 @@
 package main;
 
 import history.InMemoryHistoryManager;
-import taskInteraction.InMemoryTaskManager;
+import task_interaction.InMemoryTaskManager;
 import interfaces.HistoryManager;
 import interfaces.TaskManager;
 

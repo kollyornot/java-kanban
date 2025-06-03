@@ -1,4 +1,4 @@
-package taskClasses;
+package task_classes;
 
 import utilities.Status;
 
@@ -33,7 +33,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "taskClasses.Epic{" +
+        return "task_classes.Epic{" +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 ", description='" + description + '\'' +

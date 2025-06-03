@@ -1,41 +1,41 @@
 package utilities;
 
-public class Node<Task> {
-    private Task value;
+public class Node<T> {
+    private T value;
     private Node next;
     private Node prev;
 
-    public Node(Task value) {
+    public Node(T value) {
         this.value = value;
         this.next = null;
     }
 
-    public Node(Task value, Node<Task> next) {
+    public Node(T value, Node<T> next) {
         this.value = value;
         this.next = next;
     }
 
-    public Task getValue() {
+    public T getValue() {
         return this.value;
     }
 
-    public Node<Task> getNext() {
+    public Node<T> getNext() {
         return this.next;
     }
 
-    public Node<Task> getPrev() {
+    public Node<T> getPrev() {
         return this.prev;
     }
 
-    public void setValue(Task value) {
+    public void setValue(T value) {
         this.value = value;
     }
 
-    public void setNext(Node<Task> next) {
+    public void setNext(Node<T> next) {
         this.next = next;
     }
 
-    public void setPrev(Node<Task> prev) {
+    public void setPrev(Node<T> prev) {
         this.prev = prev;
     }
 
