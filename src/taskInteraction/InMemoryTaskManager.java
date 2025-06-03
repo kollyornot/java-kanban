@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private final HashMap<Integer, SubTask> subTasks= new HashMap<>();
+    private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final Counter counter = new Counter();
     private final InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) Managers.getDefaultHistory();
 
@@ -193,7 +193,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSubTask(SubTask subTask, Epic epic) {
+    public void addSubTask(String name, String description, Status status, Epic epic) {
         boolean found = false;
         for (Epic epics : epics.values()) {
             if (epic.getId() == epics.getId()) {
@@ -201,9 +201,9 @@ public class InMemoryTaskManager implements TaskManager {
                 break;
             }
         }
-        if (!found) {
+        if (found) {
+            SubTask subTask = addNewSubTask(name, description, status, epic.getId());
             epic.getSubTasks().add(subTask.getId());
-            subTask.setEpicId(epic.getId());
             checkAllSubTasksSameStatus(epic.getId(), Status.DONE);
         }
     }

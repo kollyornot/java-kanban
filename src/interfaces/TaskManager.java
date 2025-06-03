@@ -46,7 +46,7 @@ public interface TaskManager {
 
     void deleteSubTaskById(int id);
 
-    void addSubTask(SubTask subTask, Epic epic);
+    void addSubTask(String name, String description, Status status, Epic epic);
 
     void removeAllSubTask(Epic epic);
 }
