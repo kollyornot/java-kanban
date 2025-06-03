@@ -3,7 +3,7 @@ package tests;
 import history.InMemoryHistoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task_classes.Task;
+import taskclasses.Task;
 import utilities.Status;
 
 import java.util.List;

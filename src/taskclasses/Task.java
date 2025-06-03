@@ -1,4 +1,4 @@
-package task_classes;
+package taskclasses;
 
 import utilities.Status;
 
@@ -47,7 +47,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "task_classes.Task{" +
+        return "taskclasses.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +

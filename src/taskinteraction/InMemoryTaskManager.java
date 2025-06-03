@@ -1,11 +1,11 @@
-package task_interaction;
+package taskinteraction;
 
 import history.InMemoryHistoryManager;
 import interfaces.TaskManager;
 import main.Managers;
-import task_classes.Epic;
-import task_classes.SubTask;
-import task_classes.Task;
+import taskclasses.Epic;
+import taskclasses.SubTask;
+import taskclasses.Task;
 import utilities.Counter;
 import utilities.Status;
 

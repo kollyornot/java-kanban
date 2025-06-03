@@ -5,9 +5,9 @@ import interfaces.TaskManager;
 import main.Managers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import task_classes.Epic;
-import task_classes.SubTask;
-import task_classes.Task;
+import taskclasses.Epic;
+import taskclasses.SubTask;
+import taskclasses.Task;
 import utilities.Status;
 
 import java.util.ArrayList;

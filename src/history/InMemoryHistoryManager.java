@@ -1,7 +1,7 @@
 package history;
 
 import interfaces.HistoryManager;
-import task_classes.Task;
+import taskclasses.Task;
 import utilities.Node;
 
 import java.util.HashMap;
