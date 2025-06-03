@@ -1,5 +1,3 @@
-package test;
-
 import interfaces.HistoryManager;
 import interfaces.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
