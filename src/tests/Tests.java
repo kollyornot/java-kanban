@@ -13,8 +13,7 @@ import utilities.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class Tests {
     Managers managers = new Managers();
@@ -107,6 +106,29 @@ class Tests {
         Assertions.assertEquals(epic, taskManager.getEpicById(epicId), "эпики не совпадают");
         Assertions.assertEquals(subTask, taskManager.getSubTaskById(subTaskId), "подзадачи не совпадают");
 
+    }
+
+    @Test
+    void shouldRemoveSubtaskCompletely() {
+        Epic epic = taskManager.addNewEpic("epic", "epicDesc", new ArrayList<>());
+        SubTask subtask = taskManager.addNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+
+        int subtaskId = subtask.getId();
+        taskManager.deleteSubTaskById(subtaskId);
+        assertTrue(taskManager.getSubTaskById(subtaskId) == null, "подзадача должна быть удалена из менеджера");
+        assertFalse(taskManager.subTaskList().contains(subtask), "список подзадач не должен содержать удалённую подзадачу");
+    }
+
+    @Test
+    void epicShouldNotContainDeletedSubtaskId() {
+        Epic epic = taskManager.addNewEpic("epic", "epicDesc", new ArrayList<>());
+        SubTask subtask = taskManager.addNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+
+        int subtaskId = subtask.getId();
+        taskManager.deleteSubTaskById(subtaskId);
+
+        Epic updatedEpic = taskManager.getEpicById(epic.getId());
+        assertFalse(updatedEpic.getSubTasks().contains(subtaskId), "эпик не должен содержать ID удалённой подзадачи");
     }
 }
 
