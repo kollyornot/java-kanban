@@ -4,7 +4,6 @@ import interfaces.HistoryManager;
 import interfaces.TaskManager;
 import main.Managers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import taskclasses.Epic;
 import taskclasses.SubTask;
 import taskclasses.Task;
@@ -15,12 +14,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Tests {
+class Test {
     Managers managers = new Managers();
     TaskManager taskManager = managers.getDefault();
     HistoryManager historyManager = Managers.getDefaultHistory();
 
-    @Test
+    @org.junit.jupiter.api.Test
     void addNewTask() {
         Task task = taskManager.addNewTask("Test addNewTask", "Test addNewTask description", Status.NEW);
         final int taskId = task.getId();
@@ -37,7 +36,7 @@ class Tests {
         assertEquals(task, tasks.getFirst(), "Задачи не совпадают.");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void addNewEpic() {
         Epic epic = taskManager.addNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
         final int epicId = epic.getId();
@@ -54,7 +53,7 @@ class Tests {
         assertEquals(epic, epics.getFirst(), "Эпики не совпадают.");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void addNewSubTask() {
         SubTask subTask = taskManager.addNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, 14);
         final int subTaskId = subTask.getId();
@@ -71,7 +70,7 @@ class Tests {
         assertEquals(subTask, subTasks.getFirst(), "Подзадачи не совпадают.");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void fieldsDidNotChange() {
         Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
         final int taskId = task.getId();
@@ -81,7 +80,7 @@ class Tests {
         assertEquals(taskId, task.getId(), "айди не совпадает");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void taskWasAdded() {
         Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
         historyManager.addTaskToHistory(task);
@@ -93,7 +92,7 @@ class Tests {
         assertEquals(history1, history, "Истории не равны");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void tasksInManagerCouldBeFound() {
         Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
         Epic epic = taskManager.addNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
@@ -108,7 +107,7 @@ class Tests {
 
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void shouldRemoveSubtaskCompletely() {
         Epic epic = taskManager.addNewEpic("epic", "epicDesc", new ArrayList<>());
         SubTask subtask = taskManager.addNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
@@ -119,7 +118,7 @@ class Tests {
         assertFalse(taskManager.subTaskList().contains(subtask), "список подзадач не должен содержать удалённую подзадачу");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void epicShouldNotContainDeletedSubtaskId() {
         Epic epic = taskManager.addNewEpic("epic", "epicDesc", new ArrayList<>());
         SubTask subtask = taskManager.addNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
