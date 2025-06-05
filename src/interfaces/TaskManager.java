@@ -1,8 +1,8 @@
 package interfaces;
 
-import taskClasses.Epic;
-import taskClasses.SubTask;
-import taskClasses.Task;
+import taskclasses.Epic;
+import taskclasses.SubTask;
+import taskclasses.Task;
 import utilities.Status;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public interface TaskManager {
 
     void deleteSubTaskById(int id);
 
-    void addSubTask(SubTask subTask, Epic epic);
+    void addSubTask(String name, String description, Status status, Epic epic);
 
     void removeAllSubTask(Epic epic);
 }
