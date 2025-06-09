@@ -2,7 +2,6 @@ import interfaces.HistoryManager;
 import interfaces.TaskManager;
 import main.Managers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import taskclasses.Epic;
 import taskclasses.SubTask;
 import taskclasses.Task;
@@ -13,14 +12,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BasicFunctionsTest {
+class Test {
     Managers managers = new Managers();
     TaskManager taskManager = managers.getDefault();
     HistoryManager historyManager = Managers.getDefaultHistory();
 
-    @Test
+    @org.junit.jupiter.api.Test
     void addNewTask() {
-        Task task = taskManager.addAndGetNewTask("Test addNewTask", "Test addNewTask description", Status.NEW);
+        Task task = taskManager.addNewTask("Test addNewTask", "Test addNewTask description", Status.NEW);
         final int taskId = task.getId();
 
         final Task savedTask = taskManager.getTaskById(taskId);
@@ -35,9 +34,9 @@ class BasicFunctionsTest {
         assertEquals(task, tasks.getFirst(), "Задачи не совпадают.");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void addNewEpic() {
-        Epic epic = taskManager.addAndGetNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
+        Epic epic = taskManager.addNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
         final int epicId = epic.getId();
 
         final Task savedEpic = taskManager.getEpicById(epicId);
@@ -52,9 +51,9 @@ class BasicFunctionsTest {
         assertEquals(epic, epics.getFirst(), "Эпики не совпадают.");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void addNewSubTask() {
-        SubTask subTask = taskManager.addAndGetNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, 14);
+        SubTask subTask = taskManager.addNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, 14);
         final int subTaskId = subTask.getId();
 
         final Task savedSubTask = taskManager.getSubTaskById(subTaskId);
@@ -69,9 +68,9 @@ class BasicFunctionsTest {
         assertEquals(subTask, subTasks.getFirst(), "Подзадачи не совпадают.");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void fieldsDidNotChange() {
-        Task task = taskManager.addAndGetNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
         final int taskId = task.getId();
         assertEquals("Test fieldsDidNotChange", task.getName(), "название не совпадает");
         assertEquals("Test fieldsDidNotChange description", task.getDescription(), "описание не совпадает");
@@ -79,9 +78,9 @@ class BasicFunctionsTest {
         assertEquals(taskId, task.getId(), "айди не совпадает");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void taskWasAdded() {
-        Task task = taskManager.addAndGetNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
         historyManager.addTaskToHistory(task);
         ArrayList<Task> history1 = new ArrayList<>();
         history1.add(task);
@@ -91,11 +90,11 @@ class BasicFunctionsTest {
         assertEquals(history1, history, "Истории не равны");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void tasksInManagerCouldBeFound() {
-        Task task = taskManager.addAndGetNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
-        Epic epic = taskManager.addAndGetNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
-        SubTask subTask = taskManager.addAndGetNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, taskManager.epicList().getFirst().getId());
+        Task task = taskManager.addNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        Epic epic = taskManager.addNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
+        SubTask subTask = taskManager.addNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, taskManager.epicList().getFirst().getId());
         int taskId = task.getId();
         int epicId = epic.getId();
         int subTaskId = subTask.getId();
@@ -106,10 +105,10 @@ class BasicFunctionsTest {
 
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void shouldRemoveSubtaskCompletely() {
-        Epic epic = taskManager.addAndGetNewEpic("epic", "epicDesc", new ArrayList<>());
-        SubTask subtask = taskManager.addAndGetNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+        Epic epic = taskManager.addNewEpic("epic", "epicDesc", new ArrayList<>());
+        SubTask subtask = taskManager.addNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
 
         int subtaskId = subtask.getId();
         taskManager.deleteSubTaskById(subtaskId);
@@ -117,10 +116,10 @@ class BasicFunctionsTest {
         assertFalse(taskManager.subTaskList().contains(subtask), "список подзадач не должен содержать удалённую подзадачу");
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void epicShouldNotContainDeletedSubtaskId() {
-        Epic epic = taskManager.addAndGetNewEpic("epic", "epicDesc", new ArrayList<>());
-        SubTask subtask = taskManager.addAndGetNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+        Epic epic = taskManager.addNewEpic("epic", "epicDesc", new ArrayList<>());
+        SubTask subtask = taskManager.addNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
 
         int subtaskId = subtask.getId();
         taskManager.deleteSubTaskById(subtaskId);

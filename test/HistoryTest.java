@@ -34,11 +34,11 @@ public class HistoryTest {
         historyManager.addTaskToHistory(task1);
         List<Task> history = historyManager.getHistory();
         assertEquals(1, history.size(), "история должна содержать одну задачу");
-        assertEquals(task1, history.getFirst(), "задача должна соответствовать добавленной");
+        assertEquals(task1, history.get(0), "задача должна соответствовать добавленной");
     }
 
     @Test
-    void shouldRemoveDuplicateTask() {
+    void shouldRemoveDupicateTask() {
         historyManager.addTaskToHistory(task1);
         historyManager.addTaskToHistory(task2);
         historyManager.addTaskToHistory(task1);

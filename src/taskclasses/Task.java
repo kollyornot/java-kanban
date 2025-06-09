@@ -1,23 +1,20 @@
 package taskclasses;
 
 import utilities.Status;
-import utilities.TaskTypes;
 
 import java.util.Objects;
-
 
 public class Task {
     protected String name;
     protected String description;
     protected Status status;
     protected final int id;
-    protected TaskTypes taskType = TaskTypes.TASK;
 
     public Task(String name, String description, Status status, int id) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.id = id;
+        this.id = ++id;
     }
 
     public String getName() {
@@ -44,18 +41,18 @@ public class Task {
         this.status = status;
     }
 
-    public TaskTypes getTaskType() {
-        return taskType;
-    }
-
     public int getId() {
         return id;
     }
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s,",
-                getId(), getTaskType(), getName(), getStatus(), getDescription());
+        return "taskclasses.Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", id=" + id +
+                '}';
     }
 
     @Override
