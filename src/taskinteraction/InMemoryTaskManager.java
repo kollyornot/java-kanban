@@ -46,6 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
             removeAllSubTask(epic);
         }
         epics.clear();
+        subTasks.clear();
     }
 
     @Override
@@ -115,6 +116,12 @@ public class InMemoryTaskManager implements TaskManager {
     public void addNewEpic(Epic epic) {
         epics.put(epic.getId(), epic);
     }
+
+    public void addEpicDirect(Epic epic) {
+        epics.put(epic.getId(), epic);
+
+    }
+
 
     @Override
     public void addNewSubTask(String name, String description, Status status, int epicId) {

@@ -50,10 +50,65 @@ public class FileBackedManagerTest {
         SubTask subTask = subTasks.getFirst();
         assertEquals("SubTask1", subTask.getName(), "имя подзадания не совпадает");
         assertEquals(Status.DONE, subTask.getStatus(), "статус не совпадает");
-        assertEquals(2, subTask.getEpicId(),"айди эпика не соответствует");
+        assertEquals(2, subTask.getEpicId(), "айди эпика не соответствует");
 
         // Проверка связи между подзадачей и эпиком
         assertEquals(1, epic.getSubTasks().size(), "количество подзаданий у эпика не соответствует");
         assertEquals(3, epic.getSubTasks().getFirst(), "неверный айди подзадачи у эпика");
     }
+
+    @Test
+    void loadFromFile_shouldHandleEmptyFileGracefully() throws IOException {
+        File emptyFile = File.createTempFile("empty", ".csv");
+        try (Writer writer = new FileWriter(emptyFile, StandardCharsets.UTF_8)) {
+            writer.write("id,type,name,status,description,epic\n");
+        }
+
+        FileBackedTaskManager manager = FileBackedTaskManager.loadFromFile(emptyFile);
+
+        assertTrue(manager.taskList().isEmpty(), "taskList должен быть пустым");
+        assertTrue(manager.epicList().isEmpty(), "epicList должен быть пустым");
+        assertTrue(manager.subTaskList().isEmpty(), "subTaskList должен быть пустым");
+
+        emptyFile.delete();
+    }
+
+    @Test
+    void loadFromFile_shouldLoadAllTaskTypesAndMaintainRelations() throws IOException {
+        FileBackedTaskManager manager = FileBackedTaskManager.loadFromFile(testFile);
+
+        Task task = manager.getTaskById(1);
+        Epic epic = manager.getEpicById(2);
+        SubTask subTask = manager.getSubTaskById(3);
+
+        assertNotNull(task, "ожидалась задача с id 1");
+        assertEquals("Task1", task.getName(), "имя задачи не совпадает");
+
+        assertNotNull(epic, "ожидался эпик с id 2");
+        assertEquals("Epic1", epic.getName(), "имя эпика не совпадает");
+
+        assertNotNull(subTask, "ожидалась подзадача с id 3");
+        assertEquals(2, subTask.getEpicId(), "подзадача должна ссылаться на эпик id 2");
+
+        List<Integer> subIds = epic.getSubTasks();
+        assertEquals(1, subIds.size(), "у эпика должен быть один подзадачный id");
+        assertEquals(3, subIds.getFirst(), "id подзадачи у эпика должен быть 3");
+    }
+
+    @Test
+    void deleteAll_shouldClearAllTaskLists() {
+        FileBackedTaskManager manager = FileBackedTaskManager.loadFromFile(testFile);
+
+        assertFalse(manager.taskList().isEmpty(), "задачи должны быть загружены");
+        assertFalse(manager.epicList().isEmpty(), "эпики должны быть загружены");
+        assertFalse(manager.subTaskList().isEmpty(), "подзадачи должны быть загружены");
+
+        manager.deleteTasks();
+        manager.deleteEpics();
+
+        assertTrue(manager.taskList().isEmpty(), "все задачи должны быть удалены");
+        assertTrue(manager.epicList().isEmpty(), "все эпики должны быть удалены");
+        assertTrue(manager.subTaskList().isEmpty(), "все подзадачи должны быть удалены");
+    }
+
 }
