@@ -107,4 +107,14 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Node<Task> pos = first;
+        while (pos != null) {
+            sb.append(pos.getValue().toString());
+            pos = pos.getNext();
+        }
+        return sb.toString();
+    }
 }

@@ -46,6 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
             removeAllSubTask(epic);
         }
         epics.clear();
+        subTasks.clear();
     }
 
     @Override
@@ -96,55 +97,78 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task addNewTask(String name, String description, Status status) {
+    public void addNewTask(String name, String description, Status status) {
+        Task newTask = new Task(name, description, status, counter.getId());
+        tasks.put(newTask.getId(), newTask);
+    }
+
+    public void addNewTask(Task task) {
+        tasks.put(task.getId(), task);
+    }
+
+    @Override
+    public void addNewEpic(String name, String description, ArrayList<Integer> subTasks) {
+        Epic epic = createEpicWithCalculatedStatus(name, description, subTasks);
+        epics.put(epic.getId(), epic);
+
+    }
+
+    public void addNewEpic(Epic epic) {
+        epics.put(epic.getId(), epic);
+    }
+
+
+    @Override
+    public void addNewSubTask(String name, String description, Status status, int epicId) {
+        SubTask newSubTask = new SubTask(name, description, status, counter.getId(), epicId);
+        subTasks.put(newSubTask.getId(), newSubTask);
+    }
+
+    public void addNewSubTask(SubTask subTask) {
+        subTasks.put(subTask.getId(), subTask);
+    }
+
+    @Override
+    public Task addAndGetNewTask(String name, String description, Status status) {
         Task newTask = new Task(name, description, status, counter.getId());
         tasks.put(newTask.getId(), newTask);
         return newTask;
     }
 
+
     @Override
-    public Epic addNewEpic(String name, String description, ArrayList<Integer> subTasks) {
-        boolean areAllSubTasksDone = checkAllSubTasksSameStatus(subTasks, Status.DONE);
-        boolean areAllSubTasksNew = checkAllSubTasksSameStatus(subTasks, Status.NEW);
-        if (subTasks.isEmpty() || areAllSubTasksNew) {
-            Epic newEpic = new Epic(name, description, Status.NEW, counter.getId(), subTasks);
-        } else if (areAllSubTasksDone) {
-            Epic newEpic = new Epic(name, description, Status.DONE, counter.getId(), subTasks);
-        }
-        Epic newEpic = new Epic(name, description, Status.IN_PROGRESS, counter.getId(), subTasks);
-        epics.put(newEpic.getId(), newEpic);
-        return newEpic;
+    public Epic addAndGetNewEpic(String name, String description, ArrayList<Integer> subTasks) {
+        Epic epic = createEpicWithCalculatedStatus(name, description, subTasks);
+        epics.put(epic.getId(), epic);
+        return epic;
     }
 
     @Override
-    public SubTask addNewSubTask(String name, String description, Status status, int epicId) {
+    public SubTask addAndGetNewSubTask(String name, String description, Status status, int epicId) {
         SubTask newSubTask = new SubTask(name, description, status, counter.getId(), epicId);
         subTasks.put(newSubTask.getId(), newSubTask);
         return newSubTask;
     }
 
     @Override
-    public Task updateTask(Task task, Status status) {
+    public void updateTask(Task task, Status status) {
         task.setStatus(status);
-        return task;
     }
 
     @Override
-    public Epic updateTask(Epic epic, Status status) {
+    public void updateTask(Epic epic, Status status) {
         epic.setStatus(status);
         if (status.equals(Status.DONE)) {
             for (Integer subTaskId : epic.getSubTasks()) {
                 getSubTaskById(subTaskId).setStatus(Status.DONE);
             }
         }
-        return epic;
     }
 
     @Override
-    public SubTask updateTask(SubTask subTask, Status status) {
+    public void updateTask(SubTask subTask, Status status) {
         subTask.setStatus(status);
         checkAllSubTasksSameStatus(subTask.getEpicId(), Status.DONE);
-        return subTask;
     }
 
     @Override
@@ -202,7 +226,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         if (found) {
-            SubTask subTask = addNewSubTask(name, description, status, epic.getId());
+            SubTask subTask = addAndGetNewSubTask(name, description, status, epic.getId());
             epic.getSubTasks().add(subTask.getId());
             checkAllSubTasksSameStatus(epic.getId(), Status.DONE);
         }
@@ -211,6 +235,22 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllSubTask(Epic epic) {
         epic.getSubTasks().clear();
+    }
+
+    private Epic createEpicWithCalculatedStatus(String name, String description, ArrayList<Integer> subTasks) {
+        Status status;
+        boolean areAllSubTasksDone = checkAllSubTasksSameStatus(subTasks, Status.DONE);
+        boolean areAllSubTasksNew = checkAllSubTasksSameStatus(subTasks, Status.NEW);
+
+        if (subTasks.isEmpty() || areAllSubTasksNew) {
+            status = Status.NEW;
+        } else if (areAllSubTasksDone) {
+            status = Status.DONE;
+        } else {
+            status = Status.IN_PROGRESS;
+        }
+
+        return new Epic(name, description, status, counter.getId(), subTasks);
     }
 }
 
