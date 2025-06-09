@@ -75,7 +75,7 @@ public class FileBackedManagerTest {
     }
 
     @Test
-    void loadFromFile_shouldLoadAllTaskTypesAndMaintainRelations() throws IOException {
+    void loadFromFile_shouldLoadAllTaskTypesAndMaintainRelations() {
         FileBackedTaskManager manager = FileBackedTaskManager.loadFromFile(testFile);
 
         Task task = manager.getTaskById(1);
@@ -113,7 +113,7 @@ public class FileBackedManagerTest {
     }
 
     @Test
-    void saveAndLoad_shouldPreserveAllDataCorrectly() throws IOException {
+    void saveAndLoad_shouldPreserveAllDataCorrectly() {
         FileBackedTaskManager originalManager = new FileBackedTaskManager(testFile);
         Task task = originalManager.addAndGetNewTask("Task A", "Description A", Status.NEW);
         Epic epic = originalManager.addAndGetNewEpic("Epic B", "Description B", new ArrayList<>());
