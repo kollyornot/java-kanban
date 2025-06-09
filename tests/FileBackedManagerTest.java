@@ -9,6 +9,7 @@ import utilities.Status;
 import java.io.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -110,5 +111,45 @@ public class FileBackedManagerTest {
         assertTrue(manager.epicList().isEmpty(), "все эпики должны быть удалены");
         assertTrue(manager.subTaskList().isEmpty(), "все подзадачи должны быть удалены");
     }
+
+    @Test
+    void saveAndLoad_shouldPreserveAllDataCorrectly() throws IOException {
+        FileBackedTaskManager originalManager = new FileBackedTaskManager(testFile);
+        Task task = originalManager.addAndGetNewTask("Task A", "Description A", Status.NEW);
+        Epic epic = originalManager.addAndGetNewEpic("Epic B", "Description B", new ArrayList<>());
+        SubTask subTask = originalManager.addAndGetNewSubTask("SubTask C", "Description C", Status.IN_PROGRESS, epic.getId());
+
+
+        originalManager.addNewTask(task);
+        originalManager.addNewEpic(epic);
+        originalManager.addNewSubTask(subTask);
+
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(testFile);
+
+        List<Task> tasks = loadedManager.taskList();
+        List<Epic> epics = loadedManager.epicList();
+        List<SubTask> subTasks = loadedManager.subTaskList();
+
+        assertEquals(1, tasks.size(), "taskList должен содержать одну задачу");
+        assertEquals(1, epics.size(), "epicList должен содержать один эпик");
+        assertEquals(1, subTasks.size(), "subTaskList должен содержать одну подзадачу");
+
+        Task loadedTask = tasks.getFirst();
+        assertEquals(task.getName(), loadedTask.getName(), "имя задачи не совпадает");
+        assertEquals(task.getDescription(), loadedTask.getDescription(), "описание задачи не совпадает");
+        assertEquals(task.getStatus(), loadedTask.getStatus(), "статус задачи не совпадает");
+
+        Epic loadedEpic = epics.getFirst();
+        assertEquals(epic.getName(), loadedEpic.getName(), "имя эпика не совпадает");
+        assertEquals(epic.getDescription(), loadedEpic.getDescription(), "описание эпика не совпадает");
+        assertEquals(1, loadedEpic.getSubTasks().size(), "у эпика должен быть один сабтаск");
+
+        SubTask loadedSubTask = subTasks.getFirst();
+        assertEquals(subTask.getName(), loadedSubTask.getName(), "имя сабтаска не совпадает");
+        assertEquals(subTask.getDescription(), loadedSubTask.getDescription(), "описание сабтаска не совпадает");
+        assertEquals(subTask.getStatus(), loadedSubTask.getStatus(), "статус сабтаска не совпадает");
+        assertEquals(subTask.getEpicId(), loadedSubTask.getEpicId(), "айди эпика в сабтаске не совпадает");
+    }
+
 
 }
