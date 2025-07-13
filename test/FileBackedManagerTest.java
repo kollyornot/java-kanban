@@ -116,13 +116,11 @@ public class FileBackedManagerTest {
     @Test
     void saveAndLoad_shouldPreserveAllDataCorrectly() {
         FileBackedTaskManager originalManager = new FileBackedTaskManager(testFile);
-        Task task = originalManager.addAndGetNewTask("Task A", "Description A", Status.NEW);
-        Epic epic = originalManager.addAndGetNewEpic("Epic B", "Description B", new ArrayList<>());
-        SubTask subTask = originalManager.addAndGetNewSubTask("SubTask C", "Description C", Status.IN_PROGRESS, epic.getId());
-
-
+        Task task = new Task("Task A", "Description A", Status.NEW);
         originalManager.addNewTask(task);
+        Epic epic = new Epic("Epic B", "Description B", Status.NEW, new ArrayList<>());
         originalManager.addNewEpic(epic);
+        SubTask subTask = new SubTask("SubTask C", "Description C", Status.IN_PROGRESS, epic.getId());
         originalManager.addNewSubTask(subTask);
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(testFile);

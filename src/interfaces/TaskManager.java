@@ -6,6 +6,7 @@ import taskclasses.Task;
 import utilities.Status;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public interface TaskManager {
     ArrayList<Task> taskList();
@@ -13,6 +14,8 @@ public interface TaskManager {
     ArrayList<Epic> epicList();
 
     ArrayList<SubTask> subTaskList();
+
+    ArrayList<Task> prioritizedTasksList();
 
     void deleteTasks();
 

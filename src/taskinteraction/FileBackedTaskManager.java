@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
@@ -49,36 +50,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                         break;
                 }
             }
-            for (SubTask subtask : manager.subTaskList()) {
-                Epic epic = manager.getEpicById(subtask.getEpicId());
-                if (epic != null) {
-                    epic.addSubTask(subtask.getId());
-                }
-            }
+            manager.subTaskList().stream()
+                    .map(subtask -> Map.entry(subtask, manager.getEpicById(subtask.getEpicId())))
+                    .filter(entry -> entry.getValue() != null)
+                    .forEach(entry -> entry.getValue().addSubTask(entry.getKey().getId()));
+
 
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при загрузке данных с файла");
         }
         return manager;
-    }
-
-
-    @Override
-    public void addNewTask(String name, String description, Status status) {
-        super.addNewTask(name, description, status);
-        save();
-    }
-
-    @Override
-    public void addNewEpic(String name, String description, ArrayList<Integer> subTasks) {
-        super.addNewEpic(name, description, subTasks);
-        save();
-    }
-
-    @Override
-    public void addNewSubTask(String name, String description, Status status, int epicId) {
-        super.addNewSubTask(name, description, status, epicId);
-        save();
     }
 
     @Override
@@ -166,28 +147,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void removeAllSubTask(Epic epic) {
         super.removeAllSubTask(epic);
         save();
-    }
-
-    @Override
-    public SubTask addAndGetNewSubTask(String name, String description, Status status, int epicId) {
-        SubTask newSubTask = super.addAndGetNewSubTask(name, description, status, epicId);
-        save();
-        return newSubTask;
-    }
-
-    @Override
-    public Task addAndGetNewTask(String name, String description, Status status) {
-        Task newTask = super.addAndGetNewTask(name, description, status);
-        save();
-        return newTask;
-    }
-
-
-    @Override
-    public Epic addAndGetNewEpic(String name, String description, ArrayList<Integer> subTasks) {
-        Epic epic = super.addAndGetNewEpic(name, description, subTasks);
-        save();
-        return epic;
     }
 
     public static Task fromString(String str) {

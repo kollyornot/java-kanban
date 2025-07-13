@@ -9,21 +9,13 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
     private boolean areAllSubTasksCompleted;
-    private ArrayList<Integer> subTasks;
+    private ArrayList<Integer> subTasks = new ArrayList<>();
     protected TaskTypes taskType = TaskTypes.EPIC;
-    protected LocalDateTime endTime;
+    protected LocalDateTime endTime = null;
 
     public Epic(String name, String description, Status status,
                  ArrayList<Integer> subTaskIds, Duration duration, LocalDateTime startTime,  LocalDateTime endTime) {
         super(name, description, status, duration, startTime);
-        this.areAllSubTasksCompleted = false;
-        this.subTasks = subTaskIds;
-        this.endTime = endTime;
-    }
-
-    public Epic(String name, String description, Status status, int id,
-                ArrayList<Integer> subTaskIds, Duration duration, LocalDateTime startTime,  LocalDateTime endTime) {
-        super(name, description, status, id, duration, startTime);
         this.areAllSubTasksCompleted = false;
         this.subTasks = subTaskIds;
         this.endTime = endTime;
@@ -34,15 +26,6 @@ public class Epic extends Task {
         super(name, description, status);
         this.areAllSubTasksCompleted = false;
         this.subTasks = subTaskIds;
-        this.endTime = endTime;
-    }
-
-    public Epic(String name, String description, Status status, int id,
-                ArrayList<Integer> subTaskIds) {
-        super(name, description, status, id);
-        this.areAllSubTasksCompleted = false;
-        this.subTasks = subTaskIds;
-        this.endTime = endTime;
     }
 
     public Epic(String name, String description, Status status) {
@@ -51,17 +34,6 @@ public class Epic extends Task {
         this.subTasks = new ArrayList<>();
     }
 
-    public Epic(String name, String description, Status status, int id) {
-        super(name, description, status, id);
-        this.areAllSubTasksCompleted = false;
-        this.subTasks = new ArrayList<>();
-    }
-
-    public Epic(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
-        super(name, description, status, duration, startTime);
-        this.areAllSubTasksCompleted = false;
-        this.subTasks = new ArrayList<>();
-    }
 
     public Epic(String name, String description, Status status, int id, Duration duration, LocalDateTime startTime) {
         super(name, description, status, id, duration, startTime);
@@ -87,6 +59,13 @@ public class Epic extends Task {
 
     public void addSubTask(int id) {
         this.subTasks.add(id);
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
 }
