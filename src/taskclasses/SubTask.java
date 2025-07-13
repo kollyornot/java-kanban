@@ -5,7 +5,6 @@ import utilities.TaskTypes;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 public class SubTask extends Task {
@@ -42,7 +41,6 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         String startTime;
         long duration;
         if(getStartTime() == null) {

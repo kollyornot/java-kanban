@@ -19,6 +19,7 @@ public class Task {
     protected Duration duration = null;
     protected LocalDateTime startTime = null;
     Counter counter = new Counter();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public Task(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.name = name;
@@ -109,7 +110,6 @@ public class Task {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         String startTime;
         long duration;
         if(getStartTime() == null) {

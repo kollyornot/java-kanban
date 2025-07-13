@@ -31,14 +31,12 @@ public class Epic extends Task {
     public Epic(String name, String description, Status status) {
         super(name, description, status);
         this.areAllSubTasksCompleted = false;
-        this.subTasks = new ArrayList<>();
     }
 
 
     public Epic(String name, String description, Status status, int id, Duration duration, LocalDateTime startTime) {
         super(name, description, status, id, duration, startTime);
         this.areAllSubTasksCompleted = false;
-        this.subTasks = new ArrayList<>();
     }
 
     public boolean areAllSubTasksCompleted() {

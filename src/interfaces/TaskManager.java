@@ -6,7 +6,6 @@ import taskclasses.Task;
 import utilities.Status;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 public interface TaskManager {
     ArrayList<Task> taskList();

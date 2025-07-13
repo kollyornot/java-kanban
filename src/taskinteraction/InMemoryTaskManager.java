@@ -237,25 +237,6 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getSubTasks().clear();
     }
 
-    private Epic createEpicWithCalculatedStatus(String name, String description, ArrayList<Integer> subTasks) {
-        Status status;
-        boolean areAllSubTasksDone = checkAllSubTasksSameStatus(subTasks, Status.DONE);
-        boolean areAllSubTasksNew = checkAllSubTasksSameStatus(subTasks, Status.NEW);
-
-        if (subTasks.isEmpty() || areAllSubTasksNew) {
-            status = Status.NEW;
-        } else if (areAllSubTasksDone) {
-            status = Status.DONE;
-        } else {
-            status = Status.IN_PROGRESS;
-        }
-        Epic epic = new Epic(name, description, status, subTasks);
-        epic.setStartTime(getStartTimeForEpic(epic));
-        epic.setEndTime(getEndTimeForEpic(epic));
-        epic.setDuration(getDurationForEpic(epic));
-        return epic;
-    }
-
     public boolean isTimeOverlapping(Task t1, Task t2) {
         if (t1.getStartTime() == null || t1.getEndTime() == null ||
                 t2.getStartTime() == null || t2.getEndTime() == null) {
