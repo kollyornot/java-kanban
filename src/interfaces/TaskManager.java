@@ -28,11 +28,11 @@ public interface TaskManager {
 
     ArrayList<Integer> getSubTaskListByEpic(int epicId);
 
-    void addNewTask(String name, String description, Status status);
+    void addNewTask(Task task);
 
-    void addNewEpic(String name, String description, ArrayList<Integer> subTasks);
+    void addNewEpic(Epic epic);
 
-    void addNewSubTask(String name, String description, Status status, int epicId);
+    void addNewSubTask(SubTask subTask);
 
     void updateTask(Task task, Status status);
 
@@ -46,13 +46,9 @@ public interface TaskManager {
 
     void deleteSubTaskById(int id);
 
-    void addSubTask(String name, String description, Status status, Epic epic);
+    void addSubTask(SubTask subTask, Epic epic);
 
     void removeAllSubTask(Epic epic);
 
-    Task addAndGetNewTask(String testAddNewTask, String testAddNewTaskDescription, Status status);
 
-    Epic addAndGetNewEpic(String name, String description, ArrayList<Integer> subTasks);
-
-    SubTask addAndGetNewSubTask(String testAddNewSubTask, String testAddNewSubTaskDescription, Status status, int i);
 }

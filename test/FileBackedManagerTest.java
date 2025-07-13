@@ -21,10 +21,11 @@ public class FileBackedManagerTest {
     void setUp() throws IOException {
         testFile = File.createTempFile("test", ".csv");
         try (Writer writer = new FileWriter(testFile, StandardCharsets.UTF_8)) {
-            writer.write("id,type,name,status,description,epic\n");
-            writer.write("1,TASK,Task1,NEW,task description1,\n");
-            writer.write("2,EPIC,Epic1,NEW,epic description,\n");
-            writer.write("3,SUBTASK,SubTask1,DONE,subtask description,2\n");
+            writer.write("id,type,name,status,description,startTime,duration,epic\n");
+            writer.write("1,TASK,Task1,NEW,task description1,13.06.2025 18:30,90,\n");
+            writer.write("2,EPIC,Epic1,NEW,epic description,null,0,\n");
+            writer.write("3,SUBTASK,SubTask1,DONE,subtask description,13.06.2025 20:00,45,2\n");
+
         }
     }
 

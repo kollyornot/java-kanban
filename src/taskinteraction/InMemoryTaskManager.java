@@ -6,9 +6,10 @@ import main.Managers;
 import taskclasses.Epic;
 import taskclasses.SubTask;
 import taskclasses.Task;
-import utilities.Counter;
 import utilities.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +18,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    private final Counter counter = new Counter();
     private final InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) Managers.getDefaultHistory();
 
     @Override
@@ -96,56 +96,56 @@ public class InMemoryTaskManager implements TaskManager {
         return epic.getSubTasks();
     }
 
-    @Override
     public void addNewTask(String name, String description, Status status) {
-        Task newTask = new Task(name, description, status, counter.getId());
+        Task newTask = new Task(name, description, status);
         tasks.put(newTask.getId(), newTask);
     }
 
+    @Override
     public void addNewTask(Task task) {
         tasks.put(task.getId(), task);
     }
 
-    @Override
     public void addNewEpic(String name, String description, ArrayList<Integer> subTasks) {
         Epic epic = createEpicWithCalculatedStatus(name, description, subTasks);
         epics.put(epic.getId(), epic);
 
     }
 
+    @Override
     public void addNewEpic(Epic epic) {
         epics.put(epic.getId(), epic);
     }
 
 
-    @Override
     public void addNewSubTask(String name, String description, Status status, int epicId) {
-        SubTask newSubTask = new SubTask(name, description, status, counter.getId(), epicId);
+        SubTask newSubTask = new SubTask(name, description, status, epicId);
         subTasks.put(newSubTask.getId(), newSubTask);
     }
 
+    @Override
     public void addNewSubTask(SubTask subTask) {
         subTasks.put(subTask.getId(), subTask);
     }
 
-    @Override
+
     public Task addAndGetNewTask(String name, String description, Status status) {
-        Task newTask = new Task(name, description, status, counter.getId());
+        Task newTask = new Task(name, description, status);
         tasks.put(newTask.getId(), newTask);
         return newTask;
     }
 
 
-    @Override
+
     public Epic addAndGetNewEpic(String name, String description, ArrayList<Integer> subTasks) {
         Epic epic = createEpicWithCalculatedStatus(name, description, subTasks);
         epics.put(epic.getId(), epic);
         return epic;
     }
 
-    @Override
+
     public SubTask addAndGetNewSubTask(String name, String description, Status status, int epicId) {
-        SubTask newSubTask = new SubTask(name, description, status, counter.getId(), epicId);
+        SubTask newSubTask = new SubTask(name, description, status, epicId);
         subTasks.put(newSubTask.getId(), newSubTask);
         return newSubTask;
     }
@@ -217,7 +217,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSubTask(String name, String description, Status status, Epic epic) {
+    public void addSubTask(SubTask subTask, Epic epic) {
         boolean found = false;
         for (Epic epics : epics.values()) {
             if (epic.getId() == epics.getId()) {
@@ -226,7 +226,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         if (found) {
-            SubTask subTask = addAndGetNewSubTask(name, description, status, epic.getId());
+           addNewSubTask(subTask);
             epic.getSubTasks().add(subTask.getId());
             checkAllSubTasksSameStatus(epic.getId(), Status.DONE);
         }
@@ -249,8 +249,33 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             status = Status.IN_PROGRESS;
         }
+        LocalDateTime minStartTime = LocalDateTime.MAX;
+        LocalDateTime maxEndTime = LocalDateTime.MIN;
+        Duration duration = Duration.ZERO;
+        for (Integer subTaskId : subTasks) {
+            SubTask subTask = getSubTaskById(subTaskId);
+            if(subTask.getDuration() != null) {
+                Duration subTaskDuration = subTask.getDuration();
+                duration = duration.plus(subTaskDuration);
+            }
+            if(subTask.getStartTime() != null){
+                LocalDateTime subTaskStartTime = subTask.getStartTime();
+                if(subTaskStartTime.isBefore(minStartTime)) {
+                    minStartTime = subTaskStartTime;
+                }
+            }
+            if(subTask.getEndTime() != null){
+                LocalDateTime subTaskEndTime = subTask.getEndTime();
+                if(subTaskEndTime.isAfter(maxEndTime)) {
+                    maxEndTime = subTaskEndTime;
+                }
 
-        return new Epic(name, description, status, counter.getId(), subTasks);
+            }
+        }
+        if(duration != null && minStartTime != LocalDateTime.MAX && maxEndTime != LocalDateTime.MIN) {
+            return new Epic(name, description, status, subTasks, duration, minStartTime, maxEndTime);
+        }
+        else return new Epic(name, description, status, subTasks);
     }
 }
 

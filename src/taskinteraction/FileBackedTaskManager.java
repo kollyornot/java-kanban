@@ -10,7 +10,11 @@ import utilities.TaskTypes;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
     private File file;
@@ -153,8 +157,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
 
     @Override
-    public void addSubTask(String name, String description, Status status, Epic epic) {
-        super.addSubTask(name, description, status, epic);
+    public void addSubTask(SubTask subTask, Epic epic) {
+        super.addSubTask(subTask, epic);
         save();
     }
 
@@ -193,13 +197,24 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         String name = split[2];
         Status status = Status.valueOf(split[3]);
         String description = split[4];
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        LocalDateTime startTime;
+        Duration duration;
+        if(split[5].equals("null")) {
+            startTime  = null;
+        } else startTime = LocalDateTime.parse(split[5], formatter);
+        if(Long.parseLong(split[6]) == 0) {
+            duration = null;
+        } else duration = Duration.ofMinutes(Long.parseLong(split[6]));
+
+
 
         return switch (type) {
-            case TASK -> new Task(name, description, status, id);
-            case EPIC -> new Epic(name, description, status, id);
+            case TASK -> new Task(name, description, status, id, duration, startTime);
+            case EPIC -> new Epic(name, description, status, id, duration, startTime);
             case SUBTASK -> {
-                int epicId = Integer.parseInt(split[5]);
-                yield new SubTask(name, description, status, id, epicId);
+                int epicId = Integer.parseInt(split[7]);
+                yield new SubTask(name, description, status, id, epicId, duration, startTime);
             }
             default -> throw new ManagerSaveException("Неизвестный тип задачи: " + type);
         };
@@ -208,7 +223,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     private void save() {
         try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8)) {
-            fw.write("id,type,name,status,description,epic\n");
+            fw.write("id,type,name,status,description,startTime,duration,epic\n");
             for (Task task : super.taskList()) {
                 fw.write(task.toString() + "\n");
             }

@@ -20,7 +20,8 @@ class BasicFunctionsTest {
 
     @Test
     void addNewTask() {
-        Task task = taskManager.addAndGetNewTask("Test addNewTask", "Test addNewTask description", Status.NEW);
+        Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
+        taskManager.addNewTask(task);
         final int taskId = task.getId();
 
         final Task savedTask = taskManager.getTaskById(taskId);
@@ -37,7 +38,8 @@ class BasicFunctionsTest {
 
     @Test
     void addNewEpic() {
-        Epic epic = taskManager.addAndGetNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
+        Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description", Status.NEW);
+        taskManager.addNewEpic(epic);
         final int epicId = epic.getId();
 
         final Task savedEpic = taskManager.getEpicById(epicId);
@@ -54,7 +56,8 @@ class BasicFunctionsTest {
 
     @Test
     void addNewSubTask() {
-        SubTask subTask = taskManager.addAndGetNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, 14);
+        SubTask subTask = new SubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, 14);
+        taskManager.addNewSubTask(subTask);
         final int subTaskId = subTask.getId();
 
         final Task savedSubTask = taskManager.getSubTaskById(subTaskId);
@@ -71,7 +74,8 @@ class BasicFunctionsTest {
 
     @Test
     void fieldsDidNotChange() {
-        Task task = taskManager.addAndGetNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        Task task = new Task("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        taskManager.addNewTask(task);
         final int taskId = task.getId();
         assertEquals("Test fieldsDidNotChange", task.getName(), "название не совпадает");
         assertEquals("Test fieldsDidNotChange description", task.getDescription(), "описание не совпадает");
@@ -81,7 +85,8 @@ class BasicFunctionsTest {
 
     @Test
     void taskWasAdded() {
-        Task task = taskManager.addAndGetNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        Task task = new Task("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        taskManager.addNewTask(task);
         historyManager.addTaskToHistory(task);
         ArrayList<Task> history1 = new ArrayList<>();
         history1.add(task);
@@ -93,9 +98,12 @@ class BasicFunctionsTest {
 
     @Test
     void tasksInManagerCouldBeFound() {
-        Task task = taskManager.addAndGetNewTask("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
-        Epic epic = taskManager.addAndGetNewEpic("Test addNewEpic", "Test addNewEpic description", new ArrayList<>());
-        SubTask subTask = taskManager.addAndGetNewSubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, taskManager.epicList().getFirst().getId());
+        Task task = new Task("Test fieldsDidNotChange", "Test fieldsDidNotChange description", Status.NEW);
+        taskManager.addNewTask(task);
+        Epic epic = new Epic("Test addNewEpic", "Test addNewEpic description", Status.NEW, new ArrayList<>());
+        taskManager.addNewEpic(epic);
+        SubTask subTask = new SubTask("Test addNewSubTask", "Test addNewSubTask description", Status.NEW, taskManager.epicList().getFirst().getId());
+        taskManager.addNewSubTask(subTask);
         int taskId = task.getId();
         int epicId = epic.getId();
         int subTaskId = subTask.getId();
@@ -108,8 +116,10 @@ class BasicFunctionsTest {
 
     @Test
     void shouldRemoveSubtaskCompletely() {
-        Epic epic = taskManager.addAndGetNewEpic("epic", "epicDesc", new ArrayList<>());
-        SubTask subtask = taskManager.addAndGetNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+        Epic epic = new Epic("epic", "epicDesc", Status.NEW,new  ArrayList<>());
+        SubTask subtask = new SubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+        taskManager.addNewEpic(epic);
+        taskManager.addNewSubTask(subtask);
 
         int subtaskId = subtask.getId();
         taskManager.deleteSubTaskById(subtaskId);
@@ -119,8 +129,10 @@ class BasicFunctionsTest {
 
     @Test
     void epicShouldNotContainDeletedSubtaskId() {
-        Epic epic = taskManager.addAndGetNewEpic("epic", "epicDesc", new ArrayList<>());
-        SubTask subtask = taskManager.addAndGetNewSubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+        Epic epic = new Epic("epic", "epicDesc", Status.NEW, new ArrayList<>());
+        SubTask subtask = new SubTask("subtask", "subtaskDesc", Status.NEW, epic.getId());
+        taskManager.addNewEpic(epic);
+        taskManager.addNewSubTask(subtask);
 
         int subtaskId = subtask.getId();
         taskManager.deleteSubTaskById(subtaskId);
