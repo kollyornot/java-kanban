@@ -9,6 +9,9 @@ import utilities.Status;
 import java.io.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +42,12 @@ public class FileBackedManagerTest {
         FileBackedTaskManager manager = FileBackedTaskManager.loadFromFile(testFile);
 
         List<Task> tasks = manager.taskList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         assertEquals(1, tasks.size(), "количество заданий не совпадает");
         assertEquals("Task1", tasks.getFirst().getName(), "имя задания не совпадает");
+        assertEquals(LocalDateTime.parse("13.06.2025 18:30", formatter), tasks.getFirst().getStartTime(), "время начала задачи не совпадает");
+        assertEquals(Duration.ofMinutes(90), tasks.getFirst().getDuration(), "длительность задачи не совпадает");
+        assertEquals(tasks.getFirst().getStartTime().plusMinutes(90), tasks.getFirst().getEndTime(), "время окончания задачи неверно");
 
         List<Epic> epics = manager.epicList();
         assertEquals(1, epics.size(), "количество эпиков не совпадает");
@@ -53,8 +60,10 @@ public class FileBackedManagerTest {
         assertEquals("SubTask1", subTask.getName(), "имя подзадания не совпадает");
         assertEquals(Status.DONE, subTask.getStatus(), "статус не совпадает");
         assertEquals(2, subTask.getEpicId(), "айди эпика не соответствует");
+        assertEquals(LocalDateTime.parse("13.06.2025 20:00", formatter), subTask.getStartTime(), "время начала подзадачи не совпадает");
+        assertEquals(Duration.ofMinutes(45), subTask.getDuration(), "длительность подзадачи не совпадает");
+        assertEquals(subTask.getStartTime().plusMinutes(45), subTask.getEndTime(), "время окончания подзадачи неверно");
 
-        // Проверка связи между подзадачей и эпиком
         assertEquals(1, epic.getSubTasks().size(), "количество подзаданий у эпика не соответствует");
         assertEquals(3, epic.getSubTasks().getFirst(), "неверный айди подзадачи у эпика");
     }
@@ -116,11 +125,12 @@ public class FileBackedManagerTest {
     @Test
     void saveAndLoad_shouldPreserveAllDataCorrectly() {
         FileBackedTaskManager originalManager = new FileBackedTaskManager(testFile);
-        Task task = new Task("Task A", "Description A", Status.NEW);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        Task task = new Task("Task A", "Description A", Status.NEW, Duration.ofMinutes(90), LocalDateTime.parse("13.06.2025 18:30", formatter));
         originalManager.addNewTask(task);
         Epic epic = new Epic("Epic B", "Description B", Status.NEW, new ArrayList<>());
         originalManager.addNewEpic(epic);
-        SubTask subTask = new SubTask("SubTask C", "Description C", Status.IN_PROGRESS, epic.getId());
+        SubTask subTask = new SubTask("SubTask C", "Description C", Status.IN_PROGRESS, epic.getId(), Duration.ofMinutes(45), LocalDateTime.parse("13.06.2025 20:00", formatter));
         originalManager.addNewSubTask(subTask);
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(testFile);
@@ -138,6 +148,10 @@ public class FileBackedManagerTest {
         assertEquals(task.getDescription(), loadedTask.getDescription(), "описание задачи не совпадает");
         assertEquals(task.getStatus(), loadedTask.getStatus(), "статус задачи не совпадает");
 
+        assertEquals(LocalDateTime.parse("13.06.2025 18:30", formatter), loadedTask.getStartTime(), "время начала задачи не совпадает");
+        assertEquals(Duration.ofMinutes(90), loadedTask.getDuration(), "длительность задачи не совпадает");
+        assertEquals(loadedTask.getStartTime().plusMinutes(90), loadedTask.getEndTime(), "время окончания задачи неверно");
+
         Epic loadedEpic = epics.getFirst();
         assertEquals(epic.getName(), loadedEpic.getName(), "имя эпика не совпадает");
         assertEquals(epic.getDescription(), loadedEpic.getDescription(), "описание эпика не совпадает");
@@ -148,6 +162,9 @@ public class FileBackedManagerTest {
         assertEquals(subTask.getDescription(), loadedSubTask.getDescription(), "описание сабтаска не совпадает");
         assertEquals(subTask.getStatus(), loadedSubTask.getStatus(), "статус сабтаска не совпадает");
         assertEquals(subTask.getEpicId(), loadedSubTask.getEpicId(), "айди эпика в сабтаске не совпадает");
+        assertEquals(LocalDateTime.parse("13.06.2025 20:00", formatter), subTask.getStartTime(), "время начала подзадачи не совпадает");
+        assertEquals(Duration.ofMinutes(45), subTask.getDuration(), "длительность подзадачи не совпадает");
+        assertEquals(subTask.getStartTime().plusMinutes(45), subTask.getEndTime(), "время окончания подзадачи неверно");
     }
 
 
